@@ -1,58 +1,77 @@
+<!--단방향 바인딩-->
+
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div :class="nameClass">
+<!--    {{greeting(name)}}-->
+<!--      {{greet}}-->
+<!--      {{greeting('name')}}-->
+<!--      {{objectName}}-->
+      {{name}}
+    </div>
+
+<!--  <button class="btn btn-primary"-->
+<!--          v-on:click="consoleLog">Click</button>-->
+
+  <input :type="type" :value="name">
+  <button class="btn btn-danger"
+          @click="updateName">updateName</button>
+<!--  v-bind = : -->
+<!--  v-on = @ -->
+<!--  한 태그안에 다섯개까지만-->
 </template>
 
 <script>
+import { ref,reactive } from 'vue';
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  setup(){
+    //변수,함수 선언
+    const type = ref('text');
+    //타입 작성 number , text..
+    const name = ref('네임');
+    const nameClass = ref('');
+    const objectName = reactive({
+      id : 1
+    })
+    //기본 자료형(숫자,문자)은 ref
+    //object,array는 reactive
+    const greeting = (name) => {
+      return 'hello' + name;
+    }
+    const greet = greeting(name);
+    // 두 변수는 같은 내용이다
+
+    const consoleLog = () => {
+      console.log('hello world');
+    };
+
+    const updateName = () => {
+      name.value = "i wanna go home"
+      //ref 사용할때는 .value 사용
+      //objectName.id = 2;
+      //reactive 사용할때는 value안적어도 됨
+      type.value = 'text';
+      //넘버선언 -> 텍스트 데이터 바인딩
+      nameClass.value='name';
+      console.log(name);
+    };
+
+    return{
+      name,
+      greeting,
+      greet,
+      consoleLog,
+      updateName,
+      objectName,
+      type,
+      nameClass
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+<style>
+.name {
+  color: red;
 }
 </style>
