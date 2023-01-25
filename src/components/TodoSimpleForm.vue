@@ -21,19 +21,15 @@
 import {ref} from "vue";
 
 export default {
-  setup() {
+  emits:['add-todo'],
+  setup(props,{ emit }) {
     const todo = ref('');
     const hasError = ref(false);
-    const todos = ref([]);
-    const deleteTodo = (index) => {
-      todos.value.splice(index,1);
-    }
-
     const onSubmit = () => {
       if (todo.value === '') {
         hasError.value = true;
       }else{
-        todos.value.push({
+          emit('add-todo',{
           id: Date.now(),
           subject: todo.value,
           completed: false,
@@ -47,8 +43,6 @@ export default {
       todo,
       hasError,
       onSubmit,
-      todos,
-      deleteTodo
     }
   }
 }

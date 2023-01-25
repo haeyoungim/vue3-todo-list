@@ -1,54 +1,69 @@
 <template>
   <div class="container">
   <h2>To-Do List</h2>
-    <TodoSimpleForm/>
-
-<div v-if="!todos.length">
-    추가된 Todo가 없습니다.
+    <input class="form-control"
+           type="text"
+           v-model="searchText"
+           placeholder="Search">
+    <hr/>
+    <TodoSimpleForm @add-todo="addTodo"/>
+<div v-if="!filteredTodos.length">
+    there is noting to display
 </div>
-    <div v-for="(todo,index) in todos"
-         :key="todo.id"
-         class="card mt-2">
-
-      <div class="card-body p-2 d-flex align-items-center">
-        <div class="form-check flex-grow-1">
-          <input class="form-check-input"
-                 type="checkbox"
-                  v-model="todo.completed">
-          <label class="form-check-label"
-                 :class="{ todo: todo.completed  }">
-            {{todo.subject}}
-          </label>
-        </div>
-        <div>
-          <button class="btn btn-danger bts-sm"
-                  @click="deleteTodo(index)">
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+  <TodoList :todos="filteredTodos"
+            @toggle-todo="toggleTodo"
+            @delete-todo="deleteTodoApp"/>
   </div>
 </template>
 
 <script>
 import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
-
+import TodoList from "@/components/TodoList.vue";
+import {ref,computed} from "vue";
 
 export default {
   components:{
-    TodoSimpleForm
+    TodoSimpleForm,
+    TodoList
   },
   setup(){
-
+    const todos = ref([]);
     const todoStyle ={
       textDecoration: 'line-through',
       color:'gray'
     }
 
+    const deleteTodoApp = (index) => {
+      todos.value.splice(index,1);
+    };
+
+    const addTodo = (todo) => {
+      todos.value.push(todo);
+    };
+
+    const toggleTodo = (index) => {
+      console.log(todos.value[index]);
+      todos.value[index].completed = !todos.value[index].completed
+    };
+
+    const searchText = ref('');
+    const filteredTodos = computed(() => {
+      if (searchText.value) {
+        return todos.value.filter(todo => {
+          return todo.subject.includes(searchText.value);
+        });
+      }
+      return todos.value;
+    });
 
     return{
+      todos,
       todoStyle,
+      deleteTodoApp,
+      addTodo,
+      toggleTodo,
+      searchText,
+      filteredTodos
     }
   }
 }
