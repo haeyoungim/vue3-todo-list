@@ -70,9 +70,9 @@ export default {
 </script>
 
 <style>
-  .todo{
-    color:gray;
-    text-decoration: line-through;
-  }
+  /*.todo{*/
+  /*  color:gray;*/
+  //  text-decoration: line-through;
+  //}
 
 </style>
