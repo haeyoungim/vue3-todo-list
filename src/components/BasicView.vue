@@ -42,7 +42,7 @@ export default {
     };
 
     const toggleTodo = (index) => {
-      console.log(todos.value[index]);
+      // console.log(todos.value[index]);
       todos.value[index].completed = !todos.value[index].completed
     };
 
